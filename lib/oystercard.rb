@@ -18,18 +18,28 @@ class Oystercard
   end
 
   def touch_in(station)
-    @journey = Journey.new
+    # @journey = Journey.new
+    if !@journey.entry_station.nil? #&& journey.exit_station.nil?
+      @journey.end(nil)
+      log_journey
+      deduct(MINIMUM_FARE+PENALTY_FARE)
+    end
+    raise 'Insufficient Funds!' if insufficient_funds?
+    @journey.start(station)
+
     # charge fee if entry station is nil
     # AND exit station is not (or vice versa)
     # @journey.end
     # @log << @journey.record
     # @journey.reset
-    raise 'Insufficient Funds!' if insufficient_funds?
-    @journey.start(station)
+
 end
 
   def touch_out(station)
-    deduct(MINIMUM_FARE)
+    if !@journey.exit_station.nil?
+      deduct(PENALTY_FARE)
+    end
+    # deduct(MINIMUM_FARE)
     #@log << { @entry_station => @exit_station }
     #if BOTH entry and exit station written to the log are not nil reset values
 
@@ -44,12 +54,13 @@ end
   private
 
   def log_journey
-    # @journey.end
+    # @journey.end(@journey.exit_station)
     @log << @journey.record
     # @journey.reset
   end
 
   def deduct(amount)
+
     @balance -= amount
   end
 

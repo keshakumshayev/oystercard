@@ -4,7 +4,7 @@ require './lib/journey'
 # # OYSTERCARD
 # # parts 4-5
 # # # new oyster card
-# p oyster = Oystercard.new
+p oyster = Oystercard.new
 # # # should display a balance of 0
 # # p oyster.balance
 # # # add some money
@@ -16,8 +16,8 @@ require './lib/journey'
 # # p 'pounds to the oyster card because the limit is 90'
 # # p oyster.add_money(91)
 # # part 7
-# # p oyster.add_money(50)
-# # p 'expected balance 50'
+p oyster.add_money(50)
+# p 'expected balance 50'
 # # p oyster.balance
 # # p 'expecting to subtract £2'
 # # p oyster.deduct(2)
@@ -55,7 +55,17 @@ require './lib/journey'
 # p 'expect to fail'
 # p station = Station.new
 p journey = Journey.new
-p journey.start('aldgate east')
-p journey.end('hoxton')
-p 'FAIL' if journey.entry_station != 'aldgate east'
-p journey.record
+# p journey.start('aldgate east')
+# p journey.end('hoxton')
+# p 'FAIL' if journey.entry_station != 'aldgate east'
+# p journey.record
+# p oyster.touch_in('aldgate east')
+# p oyster.touch_out('aldgate east')
+# p oyster.log
+puts
+puts
+p oyster.touch_in('aldgate east')
+
+p oyster.touch_in('aldgate east')
+p oyster.log
+p oyster.balance

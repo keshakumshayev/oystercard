@@ -15,6 +15,6 @@ class Journey
   end
 
   def record
-
+    
   end
 end

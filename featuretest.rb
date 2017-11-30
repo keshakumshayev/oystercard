@@ -56,4 +56,6 @@ require './lib/journey'
 # p station = Station.new
 p journey = Journey.new
 p journey.start('aldgate east')
+p journey.end('hoxton')
 p 'FAIL' if journey.entry_station != 'aldgate east'
+p journey.record

@@ -18,4 +18,8 @@ describe Journey do
   it 'remembers the station where the journey ends' do
     expect { subject.end(exit_station) }.to change { subject.exit_station }.to eq exit_station
   end
+
+  it 'records the journey in a hash' do
+    expect(subject.record).to eq({:entry_station => entry_station, :exit_station => exit_station})
+  end
 end

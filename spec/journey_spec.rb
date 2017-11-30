@@ -20,6 +20,10 @@ describe Journey do
     expect { subject.end(exit_station) }.to change { subject.exit_station }.to eq exit_station
   end
 
+  it 'entry station is nil before journey starts' do
+    expect(subject.entry_station).to eq nil
+  end
+
   # it 'resets the value of entry and exit stations' do
   #   subject.start(entry_station)
   #   subject.end(exit_station)
@@ -31,4 +35,8 @@ describe Journey do
     subject.end(exit_station)
     expect(subject.record).to eq({:entry_station => entry_station, :exit_station => exit_station})
   end
+
+  # it 'records the journey with entry station as a nil value when touched out without touching in' do
+  #   # expect(subject.record).to eq({:entry_station => entry_station, :exit_station => nil})
+  # end
 end

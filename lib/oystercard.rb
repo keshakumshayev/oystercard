@@ -17,6 +17,7 @@ class Oystercard
   end
 
   def touch_in(station)
+    #charge fee if exit station nil
     raise 'Insufficient Funds!' if insufficient_funds?
     @entry_station = station
   end
@@ -25,6 +26,7 @@ class Oystercard
     deduct(MINIMUM_FARE)
     @exit_station = station
     @log << { @entry_station => @exit_station }
+    #if BOTH entry and exit station written to the log are not nil reset values
     @entry_station = nil
   end
 

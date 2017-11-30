@@ -13,7 +13,7 @@ describe Oystercard do
   TEST_DEDUCT_MONEY = 2
 
   describe '#initalize' do
-    it 'should check that the card has an empty list of journey by default' do
+    it 'should check that the card has an empty list of journeys by default' do
       expect(subject.log).to be_empty
     end
   end
@@ -43,8 +43,9 @@ describe Oystercard do
     it 'cannot touch in with insufficient funds' do
       expect { subject.touch_in(entry_station) }.to raise_error 'Insufficient Funds!'
     end
+  end
 
-    describe '#touch out' do
+  describe '#touch out' do
       before do
         subject.add_money(ADD_MONEY)
         subject.touch_in(entry_station)
@@ -64,7 +65,6 @@ describe Oystercard do
         expect(subject.exit_station).to eq exit_station
       end
     end
-  end
 
   describe 'stores information about travel' do
     before do

@@ -7,11 +7,11 @@ class Journey
   end
 
   def start(station)
-
+    @entry_station = station
   end
 
   def end(station)
-
+    @exit_station = station
   end
 
   def record

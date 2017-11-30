@@ -30,9 +30,11 @@ end
 
   def touch_out(station)
     deduct(MINIMUM_FARE)
-    @exit_station = station
     #@log << { @entry_station => @exit_station }
     #if BOTH entry and exit station written to the log are not nil reset values
+
+    @journey.end(station)
+    log_journey
   end
 
   def in_journey?

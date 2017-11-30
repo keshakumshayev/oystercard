@@ -20,6 +20,8 @@ describe Journey do
   end
 
   it 'records the journey in a hash' do
+    subject.start(entry_station)
+    subject.end(exit_station)
     expect(subject.record).to eq({:entry_station => entry_station, :exit_station => exit_station})
   end
 end

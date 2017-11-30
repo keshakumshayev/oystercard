@@ -15,6 +15,6 @@ class Journey
   end
 
   def record
-    
+    {:entry_station => @entry_station, :exit_station => @exit_station}
   end
 end

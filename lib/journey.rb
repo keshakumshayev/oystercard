@@ -13,4 +13,8 @@ class Journey
   def end(station)
 
   end
+
+  def record
+
+  end
 end

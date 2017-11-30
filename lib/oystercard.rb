@@ -17,7 +17,8 @@ class Oystercard
   end
 
   def touch_in(station = nil)
-    #charge fee if exit station nil
+    # charge fee if entry station is nil
+    # AND exit station is not (or vice versa)
     raise 'Insufficient Funds!' if insufficient_funds?
     @entry_station = station
   end

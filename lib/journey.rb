@@ -17,4 +17,8 @@ class Journey
   def record
     {:entry_station => @entry_station, :exit_station => @exit_station}
   end
+
+  # def reset
+  #   @entry_station, @exit_station = nil, nil
+  # end
 end

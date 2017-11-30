@@ -16,7 +16,7 @@ class Oystercard
     @balance += amount
   end
 
-  def touch_in(station)
+  def touch_in(station = nil)
     #charge fee if exit station nil
     raise 'Insufficient Funds!' if insufficient_funds?
     @entry_station = station

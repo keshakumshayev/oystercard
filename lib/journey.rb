@@ -5,6 +5,11 @@ class Journey
   #   @entry_station = entry_station
   #   @exit_station = exit_station
   # end
+  def start(station)
 
+  end
 
+  def end(station)
+
+  end
 end

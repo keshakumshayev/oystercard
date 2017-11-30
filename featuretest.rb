@@ -55,3 +55,5 @@ require './lib/journey'
 # p 'expect to fail'
 # p station = Station.new
 p journey = Journey.new
+p journey.start('aldgate east')
+p 'FAIL' if journey.entry_station != 'aldgate east'

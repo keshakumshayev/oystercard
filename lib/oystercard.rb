@@ -1,15 +1,17 @@
 require_relative 'journey'
 
 class Oystercard
-  attr_reader :balance, :entry_station, :exit_station, :log
+  attr_reader :balance, :log
   BALANCE_LIMIT = 90
   MINIMUM_BALANCE = 0
   MINIMUM_FARE = 2
   PENALTY_FARE = 6
 
   def initialize
-    @balance = 0
+    @balance = MINIMUM_BALANCE
     @log = []
+    @journey = Journey.new
+    @in_journey = false
   end
 
   def add_money(amount)
@@ -18,49 +20,49 @@ class Oystercard
   end
 
   def touch_in(station)
-    # @journey = Journey.new
-    if !@journey.entry_station.nil? #&& journey.exit_station.nil?
-      @journey.end(nil)
-      log_journey
-      deduct(MINIMUM_FARE+PENALTY_FARE)
-    end
     raise 'Insufficient Funds!' if insufficient_funds?
     @journey.start(station)
-
-    # charge fee if entry station is nil
-    # AND exit station is not (or vice versa)
-    # @journey.end
-    # @log << @journey.record
-    # @journey.reset
-
-end
+    @in_journey = true
+    if false
+      if @journey.entry_station == nil and @journey.exit_station == nil
+        @journey.start(station)
+      elsif @journey.entry_station != nil and @journey.exit_station == nil
+        log_journey
+        deduct(MINIMUM_FARE+PENALTY_FARE)
+        @journey.start(nil)
+        @journey.end(nil)
+        @journey.start(station)
+      end
+    end
+  end
 
   def touch_out(station)
-    if !@journey.exit_station.nil?
-      deduct(PENALTY_FARE)
-    end
-    # deduct(MINIMUM_FARE)
-    #@log << { @entry_station => @exit_station }
-    #if BOTH entry and exit station written to the log are not nil reset values
-
+    deduct(MINIMUM_FARE)
     @journey.end(station)
-    log_journey
+    @in_journey = false
+    if false
+      if !@journey.exit_station.nil?
+        deduct(PENALTY_FARE)
+      end
+    end
   end
 
-  def in_journey?
-    !@journey.entry_station.nil?
-  end
+  # def in_journey?
+  #   @in_journey =
+  # end
 
   private
 
+  # def end_journey
+  #   log_journey
+  #   @in_journey = false
+  # end
+
   def log_journey
-    # @journey.end(@journey.exit_station)
     @log << @journey.record
-    # @journey.reset
   end
 
   def deduct(amount)
-
     @balance -= amount
   end
 

@@ -13,13 +13,13 @@ describe Oystercard do
   ADD_MONEY = 60
   TEST_DEDUCT_MONEY = 2
 
-  describe '#initalize' do
+  context '#initalize' do
     it 'should check that the card has an empty list of journeys by default' do
       expect(subject.log).to be_empty
     end
   end
 
-  describe '#balance' do
+  context '#balance' do
     it 'has no money initially' do
       expect(subject.balance).to eq 0
     end
@@ -34,28 +34,29 @@ describe Oystercard do
     end
   end
 
-  describe '#touch in' do
+  context '#touch in' do
     it 'can touch in when entering the tube' do
       subject.add_money(ADD_MONEY)
       subject.touch_in(entry_station)
-      expect(subject.in_journey?).to be true
+      expect(subject.in_journey).to eq true
     end
 
-    it 'gives the journey a station upon touching in' do
+    xit 'remembers an entry station upon touching in' do
       subject.add_money(ADD_MONEY)
-      expect(subject.touch_in(entry_station)).to eq(journey.entry_station)
+      journey = double(:journey, entry_station: nil)
+      expect{ subject.touch_in(entry_station) }.to change{ journey.entry_station }.to eq entry_station
     end
 
     it 'cannot touch in with insufficient funds' do
       expect { subject.touch_in(entry_station) }.to raise_error 'Insufficient Funds!'
     end
 
-    it 'deduces a penalty fee for not tapping out' do
-
-    end
+    # it 'deduces a penalty fee for not tapping out' do
+    #
+    # end
   end
 
-  describe '#touch out' do
+  context '#touch out' do
       before do
         subject.add_money(ADD_MONEY)
         subject.touch_in(entry_station)
@@ -65,27 +66,21 @@ describe Oystercard do
 
       end
 
-      # it 'no longer in a journey after touching out' do
-      #   subject.touch_out(exit_station)
-      #   expect(subject.in_journey?).to be false
-      # end
+      xit 'no longer in a journey after touching out' do
+        subject.touch_out(exit_station)
+        expect(subject.in_journey).to be false
+      end
 
-      it 'deduces a fare when tapping out' do
+      xit 'deduces a fare when tapping out' do
         expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-Oystercard::MINIMUM_FARE)
       end
 
-      it 'deduces a penalty fee for having not tapped in' do
-
-      end
-
+      # it 'deduces a penalty fee for having not tapped in' do
       #
-      # it 'should store exit station' do
-      #   subject.touch_out(exit_station)
-      #   expect(subject.exit_station).to eq exit_station
       # end
     end
 
-  describe 'stores information about travel' do
+  context 'stores information about travel' do
     before do
       subject.add_money(ADD_MONEY)
     end
@@ -94,21 +89,18 @@ describe Oystercard do
     #   expect(subject.entry_station).to eq entry_station
     # end
 
-    # it 'forgets entry station upon touching out' do
-    #   expect { subject.touch_out(exit_s dtation) }.to change { subject.entry_station }.to be nil
-    # end
+    xit 'forgets entry station of previous journey upon touching out' do
+      expect { subject.touch_out(exit_s dtation) }.to change { subject.entry_station }.to be nil
+    end
 
-    it 'should store a journey in the log when touched in and touched out' do
+    xit 'should store a journey in the log when touched in and touched out' do
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-
-
       # subject.touch_in(entry_station)
       # subject.touch_in(entry_station)
       #
       # subject.touch_out(exit_station)
       # subject.touch_out(exit_station)
-
       expect(subject.log[-1]).to eq ({entry_station: entry_station, exit_station: exit_station})
     end
   end

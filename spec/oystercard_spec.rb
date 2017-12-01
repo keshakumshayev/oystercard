@@ -44,6 +44,29 @@ describe Oystercard do
     it 'cannot touch in with insufficient funds' do
       expect { subject.touch_in(entry_station) }.to raise_error 'Insufficient Funds!'
     end
+  end
+
+  context '#touch out' do
+    before do
+      subject.add_money(ADD_MONEY)
+      subject.touch_in(entry_station)
+    end
+
+    it 'can touch out when exiting the tube' do
+      subject.touch_out(exit_station)
+      expect(subject.in_journey?).to eq false
+    end
+
+    it 'charges a standard fare when touching out' do
+      expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by -Oystercard::MINIMUM_FARE
+    end
+  end
+
+  context 'incorrect tapping' do
+    it 'deduces a penalty fee for having not tapped in' do
+      subject.add_money(ADD_MONEY)
+      expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by -(Oystercard::MINIMUM_FARE+Oystercard::PENALTY_FARE)
+    end
 
     it 'deduces a penalty fee for not tapping out' do
       subject.add_money(ADD_MONEY)
@@ -52,47 +75,14 @@ describe Oystercard do
     end
   end
 
-  context '#touch out' do
-      before do
-        subject.add_money(ADD_MONEY)
-        subject.touch_in(entry_station)
-      end
-
-      it 'can touch out when exiting the tube' do
-        subject.touch_out(exit_station)
-        expect(subject.in_journey?).to eq false
-      end
-
-      it 'charges a standard fare when touching out' do
-        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by -Oystercard::MINIMUM_FARE
-      end
-
-      # it 'deduces a penalty fee for having not tapped in' do
-      #
-      # end
-    end
-
   context 'stores information about travel' do
     before do
       subject.add_money(ADD_MONEY)
     end
 
-    # it 'remembers the station it was last tapped at' do
-    #   expect(subject.entry_station).to eq entry_station
-    # end
-
-    xit 'forgets entry station of previous journey upon touching out' do
-      expect { subject.touch_out(exit_s dtation) }.to change { subject.entry_station }.to be nil
-    end
-
-    xit 'should store a journey in the log when touched in and touched out' do
+    it 'should store a journey in the log when touched in and touched out' do
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      # subject.touch_in(entry_station)
-      # subject.touch_in(entry_station)
-      #
-      # subject.touch_out(exit_station)
-      # subject.touch_out(exit_station)
       expect(subject.log[-1]).to eq ({entry_station: entry_station, exit_station: exit_station})
     end
   end

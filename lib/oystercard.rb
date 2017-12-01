@@ -20,11 +20,18 @@ class Oystercard
 
   def touch_in(station)
     raise 'Insufficient Funds!' if insufficient_funds?
+    if in_journey?
+      end_journey(station)
+      charge_penalty
+    end
     start_journey(station)
-
   end
 
   def touch_out(station)
+    if !in_journey?
+      start_journey(station)
+      charge_penalty
+    end
     end_journey(station)
   end
 
@@ -33,6 +40,7 @@ class Oystercard
   end
 
   private
+
   def start_journey(station)
     @journey.start(station)
   end
@@ -42,6 +50,10 @@ class Oystercard
     deduct(MINIMUM_FARE)
     log_journey
     @journey.reset
+  end
+
+  def charge_penalty
+    deduct(PENALTY_FARE)
   end
 
   def log_journey

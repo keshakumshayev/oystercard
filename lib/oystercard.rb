@@ -11,7 +11,6 @@ class Oystercard
     @balance = MINIMUM_BALANCE
     @log = []
     @journey = Journey.new
-    @in_journey = false
   end
 
   def add_money(amount)
@@ -21,42 +20,29 @@ class Oystercard
 
   def touch_in(station)
     raise 'Insufficient Funds!' if insufficient_funds?
-    @journey.start(station)
-    @in_journey = true
-    if false
-      if @journey.entry_station == nil and @journey.exit_station == nil
-        @journey.start(station)
-      elsif @journey.entry_station != nil and @journey.exit_station == nil
-        log_journey
-        deduct(MINIMUM_FARE+PENALTY_FARE)
-        @journey.start(nil)
-        @journey.end(nil)
-        @journey.start(station)
-      end
-    end
+    start_journey(station)
+
   end
 
   def touch_out(station)
-    deduct(MINIMUM_FARE)
-    @journey.end(station)
-    @in_journey = false
-    if false
-      if !@journey.exit_station.nil?
-        deduct(PENALTY_FARE)
-      end
-    end
+    end_journey(station)
   end
 
-  # def in_journey?
-  #   @in_journey =
-  # end
+  def in_journey?
+    @journey.status?
+  end
 
   private
+  def start_journey(station)
+    @journey.start(station)
+  end
 
-  # def end_journey
-  #   log_journey
-  #   @in_journey = false
-  # end
+  def end_journey(station)
+    @journey.end(station)
+    deduct(MINIMUM_FARE)
+    log_journey
+    @journey.reset
+  end
 
   def log_journey
     @log << @journey.record

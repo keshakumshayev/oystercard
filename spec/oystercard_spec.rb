@@ -38,16 +38,18 @@ describe Oystercard do
     it 'can touch in when entering the tube' do
       subject.add_money(ADD_MONEY)
       subject.touch_in(entry_station)
-      expect(subject.in_journey).to eq true
+      expect(subject.in_journey?).to eq true
     end
 
     it 'cannot touch in with insufficient funds' do
       expect { subject.touch_in(entry_station) }.to raise_error 'Insufficient Funds!'
     end
 
-    # it 'deduces a penalty fee for not tapping out' do
-    #
-    # end
+    it 'deduces a penalty fee for not tapping out' do
+      subject.add_money(ADD_MONEY)
+      subject.touch_in(entry_station)
+      expect{ subject.touch_in(entry_station) }.to change{ subject.balance }.by -(Oystercard::MINIMUM_FARE+Oystercard::PENALTY_FARE)
+    end
   end
 
   context '#touch out' do
@@ -58,7 +60,7 @@ describe Oystercard do
 
       it 'can touch out when exiting the tube' do
         subject.touch_out(exit_station)
-        expect(subject.in_journey).to eq false
+        expect(subject.in_journey?).to eq false
       end
 
       it 'charges a standard fare when touching out' do

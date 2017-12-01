@@ -24,11 +24,12 @@ describe Journey do
     expect(subject.entry_station).to eq nil
   end
 
-  # it 'resets the value of entry and exit stations' do
-  #   subject.start(entry_station)
-  #   subject.end(exit_station)
-  #   expect(subject.reset)
-  # end
+  it 'resets the value of entry and exit stations' do
+    subject.start(entry_station)
+    subject.end(exit_station)
+    subject.reset
+    expect(subject.entry_station.nil? && subject.exit_station.nil?).to be true
+  end
 
   it 'records the journey in a hash' do
     subject.start(entry_station)

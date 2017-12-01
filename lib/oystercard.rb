@@ -7,10 +7,10 @@ class Oystercard
   MINIMUM_FARE = 2
   PENALTY_FARE = 6
 
-  def initialize
+  def initialize(journey = Journey.new)
     @balance = MINIMUM_BALANCE
     @log = []
-    @journey = Journey.new
+    @journey = journey
   end
 
   def add_money(amount)

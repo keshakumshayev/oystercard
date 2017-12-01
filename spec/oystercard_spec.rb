@@ -8,7 +8,7 @@ describe Oystercard do
 
   let(:entry_station) { double(:entry_station) }
   let(:exit_station) { double(:exit_station) }
-  let(:journey) { double(:journey, entry_station: entry_station, exit_station: exit_station)}
+  let(:journey) { double(:journey, entry_station: entry_station, exit_station: exit_station) }
 
   ADD_MONEY = 60
   TEST_DEDUCT_MONEY = 2
@@ -36,6 +36,13 @@ describe Oystercard do
 
   context '#touch in' do
     it 'can touch in when entering the tube' do
+      allow(journey).to receive(:status?).and_return(true)
+      allow(journey).to receive(:record).and_return({entry_station: entry_station, exit_station: exit_station})
+      allow(journey).to receive(:reset).and_return(nil)
+      allow(journey).to receive(:start).with(entry_station).and_return(entry_station)
+      allow(journey).to receive(:end).with(entry_station).and_return(entry_station)
+
+      subject = Oystercard.new(journey)
       subject.add_money(ADD_MONEY)
       subject.touch_in(entry_station)
       expect(subject.in_journey?).to eq true

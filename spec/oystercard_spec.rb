@@ -41,12 +41,6 @@ describe Oystercard do
       expect(subject.in_journey).to eq true
     end
 
-    xit 'remembers an entry station upon touching in' do
-      subject.add_money(ADD_MONEY)
-      journey = double(:journey, entry_station: nil)
-      expect{ subject.touch_in(entry_station) }.to change{ journey.entry_station }.to eq entry_station
-    end
-
     it 'cannot touch in with insufficient funds' do
       expect { subject.touch_in(entry_station) }.to raise_error 'Insufficient Funds!'
     end
@@ -63,8 +57,14 @@ describe Oystercard do
       end
 
       it 'can touch out when exiting the tube' do
-
+        subject.touch_out(exit_station)
+        expect(subject.in_journey).to eq false
       end
+
+      it 'charges a standard fare when touching out' do
+        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by -Oystercard::MINIMUM_FARE
+      end
+
 
       xit 'no longer in a journey after touching out' do
         subject.touch_out(exit_station)

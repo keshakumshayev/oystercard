@@ -65,16 +65,6 @@ describe Oystercard do
         expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by -Oystercard::MINIMUM_FARE
       end
 
-
-      xit 'no longer in a journey after touching out' do
-        subject.touch_out(exit_station)
-        expect(subject.in_journey).to be false
-      end
-
-      xit 'deduces a fare when tapping out' do
-        expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-Oystercard::MINIMUM_FARE)
-      end
-
       # it 'deduces a penalty fee for having not tapped in' do
       #
       # end
